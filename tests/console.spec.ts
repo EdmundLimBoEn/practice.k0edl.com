@@ -262,3 +262,22 @@ test('tuning and fine-tuning drills grade the original target', async ({
   await page.click('[data-drill="4"]')
   await expect(page.locator('#points')).toHaveText('2')
 })
+
+test('background QRM follows HF preference and stays off on FM and in the QRM drill', async ({
+  page,
+}) => {
+  const toggle = page.getByRole('checkbox', { name: 'Background QRM' })
+  await expect(toggle).toBeChecked()
+  await toggle.uncheck()
+  expect((await snapshot(page)).backgroundQrm).toBe(false)
+  await page.click('[data-scene="1"]')
+  await expect(toggle).not.toBeChecked()
+  await toggle.check()
+  for (const control of ['[data-scene="6"]', '[data-drill="3"]']) {
+    await page.click(control)
+    await expect(toggle).toBeDisabled()
+    expect((await snapshot(page)).backgroundQrm).toBe(false)
+  }
+  await page.click('[data-scene="2"]')
+  await expect(toggle).toBeChecked()
+})

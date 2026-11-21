@@ -35,6 +35,7 @@ const state = { ...defaults },
 let scene = scenes[0],
   drill = -1,
   question = 0,
+  backgroundWanted = true,
   difficulty = 0,
   score = Number(localStorage.getItem('practice-score') ?? 0),
   done = false,
@@ -118,6 +119,11 @@ function load(s: Scene, resetDrill = true) {
   $('side').classList.remove('open')
 }
 function sync() {
+  const fm = scene.band.n === 2 || state.mode === 'FM'
+  const toggle = $<HTMLInputElement>('backgroundQrm')
+  toggle.disabled = fm || drill === 3
+  toggle.checked = state.backgroundQrm = backgroundWanted && !toggle.disabled
+  $<HTMLInputElement>('qsb').disabled = fm
   const isDrill = drill >= 0
   $('title').textContent = isDrill ? names[drill] : scene.name
   $('meta').innerHTML =
@@ -157,7 +163,7 @@ function sync() {
   )
   for (const k of ['bw', 'shift', 'volume', 'sql', 'noise', 'qsb'] as const) {
     const el = $<HTMLInputElement>(k),
-      v = k === 'noise' ? -state.noise : state[k]
+      v = k === 'noise' ? -state.noise : k === 'qsb' && fm ? 0 : state[k]
     el.value = String(v)
     el.style.setProperty(
       '--fill',
@@ -395,6 +401,7 @@ document.addEventListener('click', async (e) => {
         '</p>',
     )
   if (id === 'reset') {
+    backgroundWanted = true
     Object.assign(state, defaults)
     difficulty = 0
     load(scenes[0])
@@ -409,6 +416,10 @@ for (const k of ['bw', 'shift', 'volume', 'sql', 'noise', 'qsb'] as const) {
     if (k === 'noise' || k === 'qsb') difficulty = -1
     sync()
   }
+}
+$('backgroundQrm').onchange = () => {
+  backgroundWanted = $<HTMLInputElement>('backgroundQrm').checked
+  sync()
 }
 $('band').onchange = () =>
   load(scenes.find((s) => s.band.n === +$<HTMLSelectElement>('band').value)!)

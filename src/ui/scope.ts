@@ -1,6 +1,6 @@
 import { C } from './copy'
 import type { Scene } from '../band/scenes'
-import { clamp, edges, fade, freq, type Settings } from '../radio/model'
+import { clamp, edges, stationFade, freq, type Settings } from '../radio/model'
 import { segment } from '../band/plans'
 import { symbolAt, symbols } from '../dsp/ft8'
 const stops = [
@@ -144,7 +144,7 @@ export class Scope {
       )
       const amp =
         (0.82 + 0.18 * Math.sin(t * 2.8 + st.seed)) *
-        (0.6 + 0.4 * fade(st.seed, t, s.qsb))
+        (0.6 + 0.4 * stationFade(st, t, s.qsb))
       for (let x = left; x < right; x++) {
         const d = ((this.at(x / w) - origin) * side) / width
         if (fm) {

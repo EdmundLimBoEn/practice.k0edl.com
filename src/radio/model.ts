@@ -17,11 +17,12 @@ export type Settings = {
   shift: number
   noise: number
   qsb: number
+  backgroundQrm: boolean
   volume: number
   sql: number
 }
 export const presets = [
-  [20, 6],
+  [20, 12],
   [10, 28],
   [0, 65],
   [-6, 90],
@@ -32,7 +33,8 @@ export const defaults: Settings = {
   bw: 2400,
   shift: 0,
   noise: 20,
-  qsb: 6,
+  qsb: presets[0][1],
+  backgroundQrm: true,
   volume: 55,
   sql: 25,
 }
@@ -42,12 +44,17 @@ export function edges(s: Settings) {
     hi = lo + s.bw
   return s.mode === 'LSB' ? [-hi, -lo] : [lo, hi]
 }
-export function fade(seed: number, t: number, qsb: number) {
+export function fade(seed: number, t: number, qsb: number, mode?: Mode) {
+  if (mode === 'FM') return 1
+  const phase = 2 * Math.PI * t
   const a =
-    Math.sin(0.53 * t + seed * 3.7) +
-    Math.sin(0.29 * t + seed * 1.71) +
-    Math.cos(0.17 * t + seed * 0.73)
+    Math.sin(phase * (0.071 + (seed % 7) * 0.0023) + seed * 3.7) +
+    Math.sin(phase * Math.sqrt(0.019) + seed * 1.71) +
+    Math.cos(phase * Math.sqrt(0.049) + seed * 0.73)
   return 10 ** ((-qsb / 100) * (1 + a / 3))
+}
+export function stationFade(st: Station, t: number, qsb: number) {
+  return fade(Math.floor(st.f / 1000) + st.seed, t, qsb, st.mode)
 }
 export function observe(st: Station, s: Settings, t: number) {
   const offset = st.f - s.vfo,
@@ -69,7 +76,7 @@ export function observe(st: Station, s: Settings, t: number) {
         ? Math.max(0, 1 - Math.abs(offset) / 7000)
         : overlap / Math.abs(b - a)
   const level =
-    st.tone && symbolAt(t) < 0 ? 0 : fade(st.seed, t, s.qsb) * st.gain
+    st.tone && symbolAt(t) < 0 ? 0 : stationFade(st, t, s.qsb) * st.gain
   return {
     offset,
     inverted,

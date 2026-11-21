@@ -5,7 +5,13 @@ import { Receiver } from '../src/dsp/core'
 import { symbols, symbolAt } from '../src/dsp/ft8'
 import { bands, segment } from '../src/band/plans'
 import { qrmScene, scenes, type Mode } from '../src/band/scenes'
-import { defaults, edges, parseFrequency, observe } from '../src/radio/model'
+import {
+  defaults,
+  edges,
+  fade,
+  parseFrequency,
+  observe,
+} from '../src/radio/model'
 import { grade } from '../src/exercises/scoring'
 import { C } from '../src/ui/copy'
 const rate = 48000,
@@ -197,4 +203,70 @@ it('assigns every phone station a shipped QSO and gives QRM three separate conta
   expect(new Set(qrmScene.stations.map((station) => station.clipId)).size).toBe(
     3,
   )
+})
+
+it('spreads gentle HF fading over multiple slow rates and leaves FM steady', () => {
+  const n = 4096,
+    rate = 4
+  const db = Float32Array.from(
+    { length: n },
+    (_, i) => 20 * Math.log10(fade(3, i / rate, defaults.qsb, 'USB')),
+  )
+  const depth = Math.max(...db) - Math.min(...db)
+  expect(depth).toBeGreaterThan(4)
+  expect(depth).toBeLessThan(5)
+  expect(fade(3, 10, 100, 'FM')).toBe(1)
+  expect(fade(3, 10, defaults.qsb)).not.toBe(fade(4, 10, defaults.qsb))
+  const im = new Float32Array(n)
+  fft(db, im)
+  const powers = db.slice(0, n / 2).map((v, k) => (k ? v * v + im[k] ** 2 : 0))
+  const total = powers.reduce((a, b) => a + b)
+  const peak = powers.indexOf(Math.max(...powers))
+  expect((peak * rate) / n).toBeGreaterThan(0.05)
+  expect((peak * rate) / n).toBeLessThan(0.3)
+  // Three separated peaks must each carry material modulation power.
+  for (const [lo, hi] of [
+    [0.05, 0.1],
+    [0.11, 0.16],
+    [0.19, 0.25],
+  ]) {
+    const energy = powers
+      .slice(Math.ceil((lo * n) / rate), Math.floor((hi * n) / rate))
+      .reduce((a, b) => a + b)
+    expect(energy / total).toBeGreaterThan(0.27)
+  }
+})
+
+it('mixes reproducible quiet HF interference independently of the noise floor', () => {
+  const station = scenes[0].stations.find((st) => st.f === defaults.vfo)!
+  const clips = [synthetic(1)]
+  function receive(backgroundQrm = defaults.backgroundQrm, stopAt = Infinity) {
+    const stations = [station]
+    const r = new Receiver(rate, clips)
+    const out = new Float32Array(rate * 6)
+    for (let i = 0; i < out.length; i += 128)
+      r.render(
+        out.subarray(i, i + 128),
+        { ...defaults, backgroundQrm: backgroundQrm && i < stopAt },
+        stations,
+        i / rate,
+      )
+    return out
+  }
+  const clean = receive(false),
+    mixed = receive()
+  const power = clean.reduce((sum, v) => sum + v * v, 0)
+  const difference = mixed.reduce((sum, v, i) => sum + (v - clean[i]) ** 2, 0)
+  expect(10 * Math.log10(difference / power)).toBeGreaterThan(-50)
+  expect(10 * Math.log10(difference / power)).toBeLessThan(-15)
+  expect(Buffer.from(receive().buffer).equals(Buffer.from(mixed.buffer))).toBe(
+    true,
+  )
+  // After switching off, allow the IF filter to settle, then compare exactly.
+  const switched = receive(true, rate * 3)
+  expect(
+    Buffer.from(switched.buffer, rate * 4 * 4).equals(
+      Buffer.from(clean.buffer, rate * 4 * 4),
+    ),
+  ).toBe(true)
 })

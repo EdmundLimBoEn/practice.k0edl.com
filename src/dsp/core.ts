@@ -1,7 +1,8 @@
+import { randomStream, neighbours } from './background'
 import { clipRate, type Clip } from './analytic'
 import { symbolAt, symbols } from './ft8'
 import type { Station } from '../band/scenes'
-import { edges, fade, observe, type Settings } from '../radio/model'
+import { edges, stationFade, observe, type Settings } from '../radio/model'
 // Fourth-order Butterworth low pass, two independent lanes for complex I/Q.
 class Section {
   x = 0
@@ -36,6 +37,14 @@ export class Receiver {
   private phase = 0
   private phases = new Map<number, number>()
   recordings = new Map<string, Clip>()
+  private hiss = randomStream(1279)
+  private interference = randomStream(6743)
+  private carrierStart = 0
+  private carrierLength = 0
+  private carrierOffset = 0
+  private carrierPhase = 0
+  private nextCarrier = 4
+  private neighbours = new WeakMap<Station[], Station[]>()
   private tick = 0
   private codes = Array.from({ length: 8 }, (_, i) => symbols(i + 1))
   private prevI = 0
@@ -64,7 +73,16 @@ export class Receiver {
         )
         .sort((a, b) => Math.abs(a.f - s.vfo) - Math.abs(b.f - s.vfo))
         .slice(0, 8)
-    const sources = active.map((st) => {
+    const anchor = active[0]
+    const ambient = !fm && s.backgroundQrm
+    if (ambient && !this.neighbours.has(stations))
+      this.neighbours.set(stations, neighbours(stations))
+    const distant = ambient
+      ? this.neighbours
+          .get(stations)!
+          .filter((st) => Math.abs(st.f - s.vfo) < 8000)
+      : []
+    const sources = [...active, ...distant].map((st) => {
       const obs = observe(st, s, time),
         sign = st.mode === 'LSB' ? -1 : 1
       return {
@@ -72,7 +90,7 @@ export class Receiver {
         clip:
           this.recordings.get(st.clipId ?? '') ??
           this.clips[(st.seed - 1) % this.clips.length],
-        gain: st.gain * fade(st.seed, time, s.qsb),
+        gain: st.gain * stationFade(st, time, s.qsb),
         sign,
         phase: this.phases.get(st.seed) ?? 0,
         delta:
@@ -88,15 +106,15 @@ export class Receiver {
         .filter((v) => v.st.mode === 'FM')
         .sort((a, b) => b.obs.energy - a.obs.energy)[0]
     for (let n = 0; n < out.length; n++, this.tick++) {
-      let i = (Math.random() * 2 - 1) * noise,
-        q = (Math.random() * 2 - 1) * noise
+      let i = (this.hiss() * 2 - 1) * noise,
+        q = (this.hiss() * 2 - 1) * noise
       if (fm) {
         const source = strong,
           qual = source?.obs.quieting ?? 0
         if (!source || qual === 0 || source.obs.squelched) {
           out[n] =
             s.sql === 0
-              ? (Math.tanh((Math.random() - 0.5) * 1.5) * s.volume) / 100
+              ? (Math.tanh((this.hiss() - 0.5) * 1.5) * s.volume) / 100
               : 0
           continue
         }
@@ -108,10 +126,10 @@ export class Receiver {
           (0.006 + 0.08 * noise) / Math.max(0.08, source.gain)
         this.fmI +=
           0.42 *
-          (Math.cos(source.phase) + (Math.random() - 0.5) * fuzz - this.fmI)
+          (Math.cos(source.phase) + (this.hiss() - 0.5) * fuzz - this.fmI)
         this.fmQ +=
           0.42 *
-          (Math.sin(source.phase) + (Math.random() - 0.5) * fuzz - this.fmQ)
+          (Math.sin(source.phase) + (this.hiss() - 0.5) * fuzz - this.fmQ)
         const angle = Math.atan2(
           this.prevI * this.fmQ - this.prevQ * this.fmI,
           this.prevI * this.fmI + this.prevQ * this.fmQ,
@@ -123,6 +141,31 @@ export class Receiver {
             s.volume) /
           100
         continue
+      }
+      if (ambient) {
+        const seconds = this.tick / this.rate
+        if (seconds >= this.nextCarrier) {
+          this.carrierStart = seconds
+          this.carrierLength = 0.35 + this.interference() * 0.8
+          this.carrierOffset =
+            (anchor?.f ?? s.vfo) +
+            (anchor?.mode === 'LSB' ? -1 : 1) *
+              (400 + this.interference() * 2700)
+          this.nextCarrier = seconds + 9 + this.interference() * 14
+        }
+        const age = seconds - this.carrierStart
+        if (
+          age < this.carrierLength &&
+          Math.abs(this.carrierOffset - s.vfo) < 8000
+        ) {
+          this.carrierPhase += (tau * (this.carrierOffset - s.vfo)) / this.rate
+          const level =
+            0.007 * Math.min(1, age * 40, (this.carrierLength - age) * 40)
+          i += level * Math.cos(this.carrierPhase)
+          q += level * Math.sin(this.carrierPhase)
+        }
+        if (this.interference() < 3 / this.rate)
+          i += (this.interference() - 0.5) * 0.6
       }
       for (const source of sources) {
         const { st, clip, sign, gain } = source

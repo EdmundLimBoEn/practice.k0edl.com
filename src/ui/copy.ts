@@ -62,6 +62,7 @@ export const C = {
   difficulty: 'Difficulty',
   presets: ['Easy', 'Medium', 'Hard', 'Ear training'],
   noise: 'Noise floor',
+  backgroundQrm: 'Background QRM',
   qsb: 'QSB depth',
   bwPresets: ['FIL1', 'FIL2', 'FIL3'],
   modes: ['SSB', 'USB', 'LSB', 'FT8', 'FM'],

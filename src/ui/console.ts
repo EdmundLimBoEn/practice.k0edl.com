@@ -94,7 +94,7 @@ export const consoleView = () => `
   <div class="meterlabels">${C.toneScale.map((x) => '<span>' + x + '</span>').join('')}</div>
   <div class="snr"><span>${C.snr}</span><b id="snr"></b></div>
   <label>${C.difficulty}</label>
-  <div class="segments dif">${C.presets.map((p, i) => button('d' + i, p)).join('')}</div>${range('noise', C.noise, -25, 12, 1)}${range('qsb', C.qsb, 0, 100, 1)}</div></section></div>
+  <div class="segments dif">${C.presets.map((p, i) => button('d' + i, p)).join('')}</div>${range('noise', C.noise, -25, 12, 1)}${range('qsb', C.qsb, 0, 100, 1)}<label><input id="backgroundQrm" type="checkbox"> ${C.backgroundQrm}</label></div></section></div>
   <details class="card notes"><summary>${icon('book-open')}${C.tips}</summary><p id="note"></p><p>${C.priv}</p></details>
   <details class="card notes"><summary>${icon('radio')}${C.stationList}</summary>
   <div id="stations"></div></details>

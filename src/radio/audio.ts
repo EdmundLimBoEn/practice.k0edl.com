@@ -1,9 +1,10 @@
+import { neighbours } from '../dsp/background'
 import worklet from '../dsp/ssb-worklet?worker&url'
 import { analytic, synthetic, clipRate, type Clip } from '../dsp/analytic'
 import type { Settings } from './model'
 import type { Station } from '../band/scenes'
 
-async function recording(name: string) {
+export async function recording(name: string) {
   const response = await fetch('/audio/voice/' + encodeURIComponent(name), {
     redirect: 'error',
   })
@@ -82,7 +83,9 @@ export class Audio {
   }
   update(state: Settings, stations: Station[]) {
     if (!this.node) return
-    for (const st of stations) {
+    for (const st of state.backgroundQrm
+      ? [...stations, ...neighbours(stations)]
+      : stations) {
       if (st.clipId && Math.abs(st.f - state.vfo) < 13000)
         void this.load(st.clipId)
     }
