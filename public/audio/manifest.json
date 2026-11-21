@@ -8,9 +8,42 @@
         "ogg": "40v-domestic.ogg",
         "m4a": "40v-domestic.m4a"
       },
-      "duration": 61.9065,
-      "fingerprint": "3722fbe83f28156b373c7c20e7181432c289f4d8c63ddeef16915262fb93a51a",
-      "script": "scripts/qso-scripts.json#40v-domestic"
+      "duration": 115.062167,
+      "fingerprint": "0ead0b3b8b050cdce08831cf2bb786889b3de8dd76f3b11d41dc7ee82933e214",
+      "script": "scripts/qso-scripts.json#40v-domestic",
+      "source": "4aad8cf4461a24a82015c129cb62f7b8b30ede3e2d5213d73707938e3165c3e9",
+      "overs": [
+        {
+          "callsign": "W4XQZ",
+          "start": 0,
+          "end": 16.437708333333333
+        },
+        {
+          "callsign": "KD9ZVX",
+          "start": 19.144333,
+          "end": 37.89649966666667
+        },
+        {
+          "callsign": "W4XQZ",
+          "start": 39.563291,
+          "end": 55.422041
+        },
+        {
+          "callsign": "KD9ZVX",
+          "start": 56.978207999999995,
+          "end": 72.514958
+        },
+        {
+          "callsign": "W4XQZ",
+          "start": 73.775083,
+          "end": 94.49674966666666
+        },
+        {
+          "callsign": "KD9ZVX",
+          "start": 96.066541,
+          "end": 113.90312433333334
+        }
+      ]
     },
     {
       "id": "40v-dx",
@@ -20,9 +53,32 @@
         "ogg": "40v-dx.ogg",
         "m4a": "40v-dx.m4a"
       },
-      "duration": 64.2065,
-      "fingerprint": "420d42a7c3790940c9cb7b35b666eaab587f4e10ce6f96e5e0abf2a69cc729dd",
-      "script": "scripts/qso-scripts.json#40v-dx"
+      "duration": 54.325708,
+      "fingerprint": "7f0c634d58a716c03083596466a33cc6e147832debda42ae7137266a71f9a5c6",
+      "script": "scripts/qso-scripts.json#40v-dx",
+      "source": "87ae689edeb679791335d42a802d8fb7505174aadf99fd1818429ef17d01db56",
+      "overs": [
+        {
+          "callsign": "9V1QX",
+          "start": 0,
+          "end": 10.624875
+        },
+        {
+          "callsign": "VK6XQZ",
+          "start": 12.637417,
+          "end": 24.123458666666664
+        },
+        {
+          "callsign": "9V1QX",
+          "start": 26.02125,
+          "end": 39.1945
+        },
+        {
+          "callsign": "VK6XQZ",
+          "start": 40.988792,
+          "end": 53.28795866666666
+        }
+      ]
     },
     {
       "id": "20v-domestic",
@@ -32,9 +88,42 @@
         "ogg": "20v-domestic.ogg",
         "m4a": "20v-domestic.m4a"
       },
-      "duration": 60.7065,
-      "fingerprint": "2905659eb3db9514eff10fb180850f6c0ded82a60dd1a8c5a374e8d123d8c532",
-      "script": "scripts/qso-scripts.json#20v-domestic"
+      "duration": 116.758542,
+      "fingerprint": "044c004fbefdaaaaf442593707c03f72cf5be2f8966c48f6e12e33e09538e706",
+      "script": "scripts/qso-scripts.json#20v-domestic",
+      "source": "0990883e7d69774bf77e7b7c5216efb3715171c56709b41f9412b3c35313b135",
+      "overs": [
+        {
+          "callsign": "N7QZ",
+          "start": 0,
+          "end": 17.23966666666667
+        },
+        {
+          "callsign": "AB0Q",
+          "start": 18.804792,
+          "end": 36.38433366666666
+        },
+        {
+          "callsign": "N7QZ",
+          "start": 37.752042,
+          "end": 55.17845866666667
+        },
+        {
+          "callsign": "AB0Q",
+          "start": 56.910834,
+          "end": 69.85500066666667
+        },
+        {
+          "callsign": "N7QZ",
+          "start": 71.427292,
+          "end": 93.04650033333333
+        },
+        {
+          "callsign": "AB0Q",
+          "start": 95.018875,
+          "end": 115.13158333333332
+        }
+      ]
     },
     {
       "id": "20v-dx",
@@ -44,9 +133,32 @@
         "ogg": "20v-dx.ogg",
         "m4a": "20v-dx.m4a"
       },
-      "duration": 66.2065,
-      "fingerprint": "5ae2724347f87c1d58539657258f5cd4c25c101f02b8541d37430580726eb142",
-      "script": "scripts/qso-scripts.json#20v-dx"
+      "duration": 53.866292,
+      "fingerprint": "9d72235c12ee323db0a1126ae0f8914f57ea4923e98f89ddc5f75b56b8e4b529",
+      "script": "scripts/qso-scripts.json#20v-dx",
+      "source": "390627205b2c8d0e86b2385f6c31e13fe40758e2dc5762efc10a7e5504e5ce9c",
+      "overs": [
+        {
+          "callsign": "9V1ZX",
+          "start": 0,
+          "end": 10.686416666666666
+        },
+        {
+          "callsign": "W7ZVQ",
+          "start": 14.271833,
+          "end": 25.145541333333334
+        },
+        {
+          "callsign": "9V1ZX",
+          "start": 26.809583000000003,
+          "end": 40.060958
+        },
+        {
+          "callsign": "W7ZVQ",
+          "start": 41.73587500000001,
+          "end": 51.96654166666667
+        }
+      ]
     },
     {
       "id": "15v-domestic",
@@ -56,9 +168,32 @@
         "ogg": "15v-domestic.ogg",
         "m4a": "15v-domestic.m4a"
       },
-      "duration": 65.1065,
-      "fingerprint": "a61af3324e247af2c76500b60665317446298a7250f381e2b69cf3d4036785a3",
-      "script": "scripts/qso-scripts.json#15v-domestic"
+      "duration": 83.044833,
+      "fingerprint": "e1621040cacdea6257f8b39c4d48f268777d1b823591ae952721638e5d5c7bbd",
+      "script": "scripts/qso-scripts.json#15v-domestic",
+      "source": "f1983ef82e5940bb32f47385cb90f22f254988dc5a34fd0c3c672fa8e135d029",
+      "overs": [
+        {
+          "callsign": "K5ZVQ",
+          "start": 0,
+          "end": 17.853791666666666
+        },
+        {
+          "callsign": "WN3QZX",
+          "start": 21.005333,
+          "end": 39.25512466666667
+        },
+        {
+          "callsign": "K5ZVQ",
+          "start": 40.560083,
+          "end": 60.97237466666667
+        },
+        {
+          "callsign": "WN3QZX",
+          "start": 62.281208,
+          "end": 81.04499966666667
+        }
+      ]
     },
     {
       "id": "15v-dx",
@@ -68,9 +203,32 @@
         "ogg": "15v-dx.ogg",
         "m4a": "15v-dx.m4a"
       },
-      "duration": 60.9065,
-      "fingerprint": "205bc436895bc1209527c09b9d720541e05105c79ac3f62ebb517d179629ebac",
-      "script": "scripts/qso-scripts.json#15v-dx"
+      "duration": 54.023542,
+      "fingerprint": "2987d8427b344f46757c6e820a75d7eda83dc5675bd3296cd07e55c8c86c22e1",
+      "script": "scripts/qso-scripts.json#15v-dx",
+      "source": "478ee6712148675c928bf473bac4bfa403659abb87da95071188ed3349d7de1a",
+      "overs": [
+        {
+          "callsign": "9V1VQ",
+          "start": 0,
+          "end": 11.008166666666666
+        },
+        {
+          "callsign": "N6QXZ",
+          "start": 14.118875,
+          "end": 25.488625
+        },
+        {
+          "callsign": "9V1VQ",
+          "start": 26.972958,
+          "end": 40.229333
+        },
+        {
+          "callsign": "N6QXZ",
+          "start": 41.533249999999995,
+          "end": 52.79691666666666
+        }
+      ]
     },
     {
       "id": "2v-repeater",
@@ -80,9 +238,32 @@
         "ogg": "2v-repeater.ogg",
         "m4a": "2v-repeater.m4a"
       },
-      "duration": 49.6065,
-      "fingerprint": "1b4481320a540c8b7324c81e7b2f21735056f9cc6737615679ff9ccba1d06a0b",
-      "script": "scripts/qso-scripts.json#2v-repeater"
+      "duration": 44.332542,
+      "fingerprint": "cd6dcf7994efcb9508bf5b782c1dcab727e1b79a659133ac7b034217fdd9028f",
+      "script": "scripts/qso-scripts.json#2v-repeater",
+      "source": "b60e00bd9473f142b6b6453de36245c74f1c85388b55c49f07453c786e5a28f9",
+      "overs": [
+        {
+          "callsign": "KD8QZX",
+          "start": 0,
+          "end": 8.523416666666666
+        },
+        {
+          "callsign": "W8VZQ",
+          "start": 10.010875,
+          "end": 18.632458333333332
+        },
+        {
+          "callsign": "KD8QZX",
+          "start": 19.897833,
+          "end": 31.656582999999998
+        },
+        {
+          "callsign": "W8VZQ",
+          "start": 33.074124999999995,
+          "end": 43.29233333333333
+        }
+      ]
     },
     {
       "id": "2v-simplex",
@@ -92,9 +273,32 @@
         "ogg": "2v-simplex.ogg",
         "m4a": "2v-simplex.m4a"
       },
-      "duration": 53.8065,
-      "fingerprint": "047b81e63df6f02c77b511e09a8a257371c7e242a5f5af00546101af0e69cb6b",
-      "script": "scripts/qso-scripts.json#2v-simplex"
+      "duration": 51.817042,
+      "fingerprint": "ac6e57cd13159a502eaec602f23a165276ad7c444fe00a9b850d1abf0dd47077",
+      "script": "scripts/qso-scripts.json#2v-simplex",
+      "source": "17ff1cee4e22670c69457d6ba1e4836191f175fa6f997e425c732e6cadcd918d",
+      "overs": [
+        {
+          "callsign": "N4ZQV",
+          "start": 0,
+          "end": 9.677166666666666
+        },
+        {
+          "callsign": "K4VQZ",
+          "start": 11.487125,
+          "end": 23.016750000000002
+        },
+        {
+          "callsign": "N4ZQV",
+          "start": 24.139125,
+          "end": 36.88941666666667
+        },
+        {
+          "callsign": "K4VQZ",
+          "start": 38.461957999999996,
+          "end": 50.057749666666666
+        }
+      ]
     },
     {
       "id": "qrm-target",
@@ -104,9 +308,32 @@
         "ogg": "qrm-target.ogg",
         "m4a": "qrm-target.m4a"
       },
-      "duration": 66.7065,
-      "fingerprint": "a0cddf2eafa290f3fcc575e177e87866c31b0e242e14b1816c93760522487371",
-      "script": "scripts/qso-scripts.json#qrm-target"
+      "duration": 77.829958,
+      "fingerprint": "90a3686c959c8ca3a2c087272e58d345a6cc6e6d2b52fa0b3bd7b36e25b06bd5",
+      "script": "scripts/qso-scripts.json#qrm-target",
+      "source": "a23c0e5e11f3045e65f61727f7afcd42aa0598d8ef47e028212d3ea0ee4e5602",
+      "overs": [
+        {
+          "callsign": "W3VQZ",
+          "start": 0,
+          "end": 16.332958333333334
+        },
+        {
+          "callsign": "N8XQV",
+          "start": 17.526583,
+          "end": 35.03637466666667
+        },
+        {
+          "callsign": "W3VQZ",
+          "start": 36.545041,
+          "end": 55.00408266666666
+        },
+        {
+          "callsign": "N8XQV",
+          "start": 56.95329099999999,
+          "end": 76.05808266666666
+        }
+      ]
     },
     {
       "id": "qrm-upper",
@@ -116,9 +343,32 @@
         "ogg": "qrm-upper.ogg",
         "m4a": "qrm-upper.m4a"
       },
-      "duration": 65.3065,
-      "fingerprint": "5f74a18a96852e0841f6936813f55f72069a69033f51e8814081dca7d98120ca",
-      "script": "scripts/qso-scripts.json#qrm-upper"
+      "duration": 75.712708,
+      "fingerprint": "1d3e721b0c3e881cacb1fcf52b86361aa25c31faf192c6a2a6e215b0e72f3850",
+      "script": "scripts/qso-scripts.json#qrm-upper",
+      "source": "af00dc8d689c2e86653df934b7c71186429f2f13fadc8cb9543977cc2649d111",
+      "overs": [
+        {
+          "callsign": "KA9QXV",
+          "start": 0,
+          "end": 16.838375
+        },
+        {
+          "callsign": "W0QZV",
+          "start": 18.227667,
+          "end": 34.866541999999995
+        },
+        {
+          "callsign": "KA9QXV",
+          "start": 36.177292,
+          "end": 54.96825033333333
+        },
+        {
+          "callsign": "W0QZV",
+          "start": 56.830542,
+          "end": 74.126667
+        }
+      ]
     },
     {
       "id": "qrm-outer",
@@ -128,9 +378,32 @@
         "ogg": "qrm-outer.ogg",
         "m4a": "qrm-outer.m4a"
       },
-      "duration": 63.3065,
-      "fingerprint": "e61a92fc1e23466326603b126c7c543627c8b9a3c37db63bef3d22cbab787990",
-      "script": "scripts/qso-scripts.json#qrm-outer"
+      "duration": 75.552042,
+      "fingerprint": "ddcd2a1befc6281b894263c4c1bb490a64d073399f758d2dae27cc9dadc655b7",
+      "script": "scripts/qso-scripts.json#qrm-outer",
+      "source": "4b63e68e13f99e54e997371d13804bcf5e38194a7fbace5ef28415905835c197",
+      "overs": [
+        {
+          "callsign": "N1ZVQ",
+          "start": 0,
+          "end": 16.708041666666666
+        },
+        {
+          "callsign": "K2QXV",
+          "start": 17.757417,
+          "end": 34.594833666666666
+        },
+        {
+          "callsign": "N1ZVQ",
+          "start": 36.526209,
+          "end": 53.74350066666667
+        },
+        {
+          "callsign": "K2QXV",
+          "start": 55.370876,
+          "end": 74.190876
+        }
+      ]
     },
     {
       "id": "40v-portable",
@@ -140,9 +413,42 @@
         "ogg": "40v-portable.ogg",
         "m4a": "40v-portable.m4a"
       },
-      "duration": 53.1065,
-      "fingerprint": "5d61cd29a45246da541a8976231e2bb0c6b0c9990d0b9631a14ff126312a68a9",
-      "script": "scripts/qso-scripts.json#40v-portable"
+      "duration": 104.985375,
+      "fingerprint": "98501cdad1ff62fd72f1d78aa05ef3c39e412bfdee84462364728bbf94bc503c",
+      "script": "scripts/qso-scripts.json#40v-portable",
+      "source": "3d9ffd3fe8c065f769249f4443de9cbdfdcb27cf5bf6b4f993bd9ee269d30f8a",
+      "overs": [
+        {
+          "callsign": "N0ZQX",
+          "start": 0,
+          "end": 14.640916666666667
+        },
+        {
+          "callsign": "K9VXZ",
+          "start": 17.846375,
+          "end": 31.888749999999998
+        },
+        {
+          "callsign": "N0ZQX",
+          "start": 33.382125,
+          "end": 49.733583333333335
+        },
+        {
+          "callsign": "K9VXZ",
+          "start": 51.260083,
+          "end": 67.266708
+        },
+        {
+          "callsign": "N0ZQX",
+          "start": 68.665625,
+          "end": 86.73325
+        },
+        {
+          "callsign": "K9VXZ",
+          "start": 88.667083,
+          "end": 103.86812466666667
+        }
+      ]
     }
   ]
 }
