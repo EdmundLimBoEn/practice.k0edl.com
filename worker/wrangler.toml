@@ -1,0 +1,11 @@
+name = "k0edl-practice-live"
+main = "src/index.ts"
+compatibility_date = "2026-01-01"
+
+[[ratelimits]]
+name = "LIMIT"
+namespace_id = "1001"
+
+[ratelimits.simple]
+limit = 3
+period = 60

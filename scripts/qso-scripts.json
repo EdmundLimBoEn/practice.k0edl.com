@@ -1,0 +1,5 @@
+[
+ {"id":"garden","voice":"alloy","text":"Good afternoon. Your signal is five and seven with a little fading. The antenna is in the garden. Back to you."},
+ {"id":"coast","voice":"echo","text":"Thanks for the report. We have clear skies along the coast today. Your audio is coming through very clearly."},
+ {"id":"portable","voice":"nova","text":"This is a portable station on the hill. I copied the last part of your message. Could you repeat the signal report?"}
+]
