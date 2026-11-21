@@ -3,24 +3,6 @@ import { analytic, synthetic, clipRate, type Clip } from '../dsp/analytic'
 import type { Settings } from './model'
 import type { Station } from '../band/scenes'
 
-async function recordingNames(): Promise<string[]> {
-  try {
-    const response = await fetch('/audio/manifest.json', { redirect: 'error' })
-    const { voice } = await response.json()
-    return Array.isArray(voice)
-      ? voice
-          .filter(
-            (name): name is string =>
-              typeof name === 'string' &&
-              !name.includes('/') &&
-              !name.includes('\\'),
-          )
-          .slice(0, 8)
-      : []
-  } catch {
-    return []
-  }
-}
 async function recording(name: string) {
   const response = await fetch('/audio/voice/' + encodeURIComponent(name), {
     redirect: 'error',
@@ -29,7 +11,7 @@ async function recording(name: string) {
   // Decode at the DSP rate so the browser resampler anti-aliases the recording.
   const decoder = new OfflineAudioContext(1, 1, clipRate)
   const buffer = await decoder.decodeAudioData(await response.arrayBuffer())
-  const length = Math.min(buffer.length, 2 ** 19)
+  const length = buffer.length
   const samples = new Float32Array(2 ** Math.ceil(Math.log2(length)))
   samples.set(buffer.getChannelData(0).subarray(0, length))
   return analytic(samples, length)
@@ -37,8 +19,39 @@ async function recording(name: string) {
 export class Audio {
   ctx?: AudioContext
   node?: AudioWorkletNode
-  recorded = false
-  generated = false
+  private manifest: { id: string; files: { ogg: string; m4a: string } }[] = []
+  private requested = new Set<string>()
+  private loaded = new Set<string>()
+  constructor(private changed: () => void) {}
+  hasRecording(station?: Station) {
+    return this.loaded.has(station?.clipId ?? '')
+  }
+  private async load(id: string) {
+    if (this.requested.has(id)) return
+    this.requested.add(id)
+    const entry = this.manifest.find((e) => e.id === id)
+    if (!entry) return
+    const formats = document
+      .createElement('audio')
+      .canPlayType('audio/ogg; codecs="opus"')
+      ? [entry.files.ogg, entry.files.m4a]
+      : [entry.files.m4a]
+    for (const file of formats) {
+      if (!/^[a-z0-9-]+\.(ogg|m4a)$/.test(file)) continue
+      try {
+        const clip = await recording(file)
+        this.node!.port.postMessage({ id, recording: clip }, [
+          clip.re.buffer,
+          clip.im.buffer,
+        ])
+        this.loaded.add(id)
+        this.changed()
+        return
+      } catch {
+        /* Try the fallback encoding, then keep the formant voice. */
+      }
+    }
+  }
   async toggle() {
     if (this.node && this.ctx) {
       if (this.ctx.state === 'running') await this.ctx.suspend()
@@ -49,16 +62,16 @@ export class Audio {
     await this.ctx.resume()
     await this.ctx.audioWorklet.addModule(worklet)
     const clips: Clip[] = []
-    for (const file of await recordingNames()) {
-      try {
-        clips.push(await recording(file))
-        this.recorded = true
-        this.generated ||= file.startsWith('tts-')
-      } catch {
-        /* A missing or unsupported recording leaves other sources available. */
-      }
+    try {
+      const response = await fetch('/audio/manifest.json', {
+        redirect: 'error',
+      })
+      const manifest = await response.json()
+      if (Array.isArray(manifest.clips)) this.manifest = manifest.clips
+    } catch {
+      /* The receiver can start with synthetic voices. */
     }
-    if (!clips.length) for (let i = 1; i <= 5; i++) clips.push(synthetic(i))
+    for (let i = 1; i <= 5; i++) clips.push(synthetic(i))
     this.node = new AudioWorkletNode(this.ctx, 'practice-receiver', {
       numberOfInputs: 0,
       numberOfOutputs: 1,
@@ -68,6 +81,11 @@ export class Audio {
     this.node.connect(this.ctx.destination)
   }
   update(state: Settings, stations: Station[]) {
-    this.node?.port.postMessage({ state, stations, time: Date.now() / 1000 })
+    if (!this.node) return
+    for (const st of stations) {
+      if (st.clipId && Math.abs(st.f - state.vfo) < 13000)
+        void this.load(st.clipId)
+    }
+    this.node.port.postMessage({ state, stations, time: Date.now() / 1000 })
   }
 }

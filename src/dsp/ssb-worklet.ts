@@ -19,6 +19,7 @@ class PracticeReceiver extends AudioWorkletProcessor {
     super()
     this.port.onmessage = ({ data }) => {
       if (data.clips) this.core = new Receiver(sampleRate, data.clips as Clip[])
+      if (data.recording) this.core?.recordings.set(data.id, data.recording)
       if (data.state) {
         this.state = data.state
         this.stations = data.stations

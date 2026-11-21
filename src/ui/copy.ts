@@ -105,7 +105,6 @@ export const C = {
   status: 'Receiver status',
   source: 'Signal source',
   synthetic: 'Synthetic audio',
-  clip: 'Recorded audio',
   stations: 'stations',
   stationList: 'Scene signals',
   prompts: [

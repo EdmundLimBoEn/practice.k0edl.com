@@ -152,35 +152,52 @@ test('mobile nav, pan, pointer zoom, overlay and typed MHz', async ({
 test('loads a same-origin voice recording from the manifest', async ({
   page,
 }) => {
-  const rate = 48000,
-    length = rate,
-    wav = Buffer.alloc(44 + length * 2)
-  wav.write('RIFF')
-  wav.writeUInt32LE(wav.length - 8, 4)
-  wav.write('WAVEfmt ', 8)
-  wav.writeUInt32LE(16, 16)
-  wav.writeUInt16LE(1, 20)
-  wav.writeUInt16LE(1, 22)
-  wav.writeUInt32LE(rate, 24)
-  wav.writeUInt32LE(rate * 2, 28)
-  wav.writeUInt16LE(2, 32)
-  wav.writeUInt16LE(16, 34)
-  wav.write('data', 36)
-  wav.writeUInt32LE(length * 2, 40)
-  for (let i = 0; i < length; i++)
-    wav.writeInt16LE(
-      Math.round(8000 * Math.sin((2 * Math.PI * 750 * i) / rate)),
-      44 + i * 2,
-    )
-  await page.route('**/audio/manifest.json', (r) =>
-    r.fulfill({ json: { voice: ['sample.wav'] } }),
-  )
-  await page.route('**/audio/voice/sample.wav', (r) =>
-    r.fulfill({ body: wav, contentType: 'audio/wav' }),
-  )
+  await page.click('#audio')
+  await expect(page.locator('#source')).toHaveText('AI-generated voice')
+  const durations = await page.evaluate(async () => {
+    const { clips } = await (await fetch('/audio/manifest.json')).json()
+    const decoder = new OfflineAudioContext(1, 1, 12000)
+    const durations: number[] = []
+    for (const clip of clips) {
+      for (const ext of ['ogg', 'm4a']) {
+        const response = await fetch('/audio/voice/' + clip.files[ext])
+        if (!response.ok) throw Error('Missing ' + clip.files[ext])
+        if (
+          ext === 'm4a' &&
+          !document.createElement('audio').canPlayType('audio/mp4')
+        )
+          continue
+        const decoded = await decoder.decodeAudioData(
+          await response.arrayBuffer(),
+        )
+        durations.push(Math.abs(decoded.duration - clip.duration))
+      }
+    }
+    return durations
+  })
+  expect(durations.length).toBeGreaterThanOrEqual(11)
+  expect(Math.max(...durations)).toBeLessThan(0.1)
+})
+test('requests AAC when Opus playback is unavailable', async ({ page }) => {
+  const files: string[] = []
+  page.on('request', (request) => {
+    if (request.url().includes('/audio/voice/')) files.push(request.url())
+  })
+  await page.evaluate(() => {
+    const canPlay = HTMLMediaElement.prototype.canPlayType
+    HTMLMediaElement.prototype.canPlayType = function (type) {
+      return type.includes('ogg') ? '' : canPlay.call(this, type)
+    }
+  })
+  await page.click('#audio')
+  await expect.poll(() => files.length).toBeGreaterThan(0)
+  expect(files.every((file) => file.endsWith('.m4a'))).toBe(true)
+})
+test('missing station recordings retain synthetic audio', async ({ page }) => {
+  await page.route('**/audio/voice/*', (route) => route.abort())
   await page.click('#audio')
   await expect(page.locator('#audio')).toHaveText('Audio on')
-  await expect(page.locator('#source')).toHaveText('Recorded audio')
+  await expect(page.locator('#source')).toHaveText('Synthetic audio')
 })
 test('touch tap and pinch update the VFO and RF viewport', async ({
   browser,

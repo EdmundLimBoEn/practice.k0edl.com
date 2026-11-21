@@ -31,7 +31,7 @@ import { grade } from './exercises/scoring'
 const $ = <T extends HTMLElement = HTMLElement>(id: string) =>
   document.getElementById(id) as T
 const state = { ...defaults },
-  audio = new Audio()
+  audio = new Audio(() => sync())
 let scene = scenes[0],
   drill = -1,
   question = 0,
@@ -178,10 +178,12 @@ function sync() {
   $('sqlWrap').hidden = !isFM
   $('bw').toggleAttribute('disabled', state.mode === 'FM')
   $('shift').toggleAttribute('disabled', state.mode === 'FM')
-  $('source').textContent = audio.recorded
-    ? audio.generated
-      ? C.aiClip
-      : C.clip
+  $('source').textContent = audio.hasRecording(
+    air().reduce((a, b) =>
+      Math.abs(a.f - state.vfo) < Math.abs(b.f - state.vfo) ? a : b,
+    ),
+  )
+    ? C.aiClip
     : C.synthetic
   $('note').textContent =
     scene.mode === 'FM'
@@ -371,12 +373,7 @@ document.addEventListener('click', async (e) => {
           ' ' +
           (targetScene().mode === 'FT8' ? 'USB' : targetScene().mode)
   if (id === 'tools')
-    dialog(
-      '<h2>' +
-        C.tools +
-        '</h2>' +
-        button('reset', C.reset), 
-    )
+    dialog('<h2>' + C.tools + '</h2>' + button('reset', C.reset))
   if (id === 'help')
     dialog(
       '<h2>' +

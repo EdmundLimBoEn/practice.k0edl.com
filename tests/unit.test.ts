@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs'
 import { describe, it, expect } from 'vitest'
 import { analytic, clipRate, fft, synthetic } from '../src/dsp/analytic'
 import { Receiver } from '../src/dsp/core'
@@ -175,7 +176,6 @@ it('closes FM squelch and gives a centred carrier priority over an overlapping w
   expect(buffer.every((v) => v === 0)).toBe(true)
 })
 
-
 it('raises the actual receiver noise power between easy and hard', () => {
   function noisePower(noise: number) {
     const r = new Receiver(rate, []),
@@ -184,4 +184,17 @@ it('raises the actual receiver noise power between easy and hard', () => {
     return out.reduce((sum, sample) => sum + sample ** 2, 0)
   }
   expect(noisePower(0)).toBeGreaterThan(20 * noisePower(20))
+})
+
+it('assigns every phone station a shipped QSO and gives QRM three separate contacts', () => {
+  const { clips } = JSON.parse(
+    readFileSync('public/audio/manifest.json', 'utf8'),
+  )
+  const ids = new Set(clips.map((clip: { id: string }) => clip.id))
+  for (const scene of [...scenes, qrmScene])
+    for (const station of scene.stations)
+      if (station.mode !== 'FT8') expect(ids.has(station.clipId)).toBe(true)
+  expect(new Set(qrmScene.stations.map((station) => station.clipId)).size).toBe(
+    3,
+  )
 })

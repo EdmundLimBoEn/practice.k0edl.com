@@ -7,6 +7,7 @@ export type Station = {
   label: string
   seed: number
   gain: number
+  clipId?: string
   tone?: number
 }
 export type Scene = {
@@ -29,6 +30,12 @@ const special: Record<number, string> = {
   21360000: C.emergency,
   21250000: C.e15,
 }
+function voiceRole(band: number, frequency: number) {
+  if (band === 2) return frequency === 146520000 ? 'simplex' : 'repeater'
+  if ([7095000, 14195000, 21295000].includes(frequency)) return 'dx'
+  if ([7188000, 7225000, 7260000].includes(frequency)) return 'portable'
+  return 'domestic'
+}
 export const scenes: Scene[] = bands.flatMap((b) => {
   const mode: Mode = b.n === 2 ? 'FM' : b.home < 1e7 ? 'LSB' : 'USB'
   const scene: Scene = {
@@ -42,6 +49,7 @@ export const scenes: Scene[] = bands.flatMap((b) => {
     stations: b.voice.map((f, i) => ({
       f,
       mode,
+      clipId: b.n + 'v-' + voiceRole(b.n, f),
       seed: i + 1,
       gain: 0.85 + (i % 3) * 0.1,
       label:
@@ -80,6 +88,7 @@ export const qrmScene: Scene = {
   stations: [0, 2000, 2500].map((off, i) => ({
     f: 14260000 + off,
     mode: 'USB',
+    clipId: 'qrm-' + ['target', 'upper', 'outer'][i],
     label: i ? C.neighbour : C.target,
     seed: i + 1,
     gain: i ? 1.3 : 1,

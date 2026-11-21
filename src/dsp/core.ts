@@ -35,6 +35,7 @@ export class Receiver {
   private signature = ''
   private phase = 0
   private phases = new Map<number, number>()
+  recordings = new Map<string, Clip>()
   private tick = 0
   private codes = Array.from({ length: 8 }, (_, i) => symbols(i + 1))
   private prevI = 0
@@ -68,7 +69,9 @@ export class Receiver {
         sign = st.mode === 'LSB' ? -1 : 1
       return {
         st,
-        clip: this.clips[(st.seed - 1) % this.clips.length],
+        clip:
+          this.recordings.get(st.clipId ?? '') ??
+          this.clips[(st.seed - 1) % this.clips.length],
         gain: st.gain * fade(st.seed, time, s.qsb),
         sign,
         phase: this.phases.get(st.seed) ?? 0,
