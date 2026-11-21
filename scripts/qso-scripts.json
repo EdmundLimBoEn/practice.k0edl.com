@@ -1,5 +1,446 @@
 [
- {"id":"garden","voice":"alloy","text":"Good afternoon. Your signal is five and seven with a little fading. The antenna is in the garden. Back to you."},
- {"id":"coast","voice":"echo","text":"Thanks for the report. We have clear skies along the coast today. Your audio is coming through very clearly."},
- {"id":"portable","voice":"nova","text":"This is a portable station on the hill. I copied the last part of your message. Could you repeat the signal report?"}
+  {
+    "id": "40v-domestic",
+    "scene": "40v",
+    "role": "domestic",
+    "speakers": {
+      "W4XQZ": {
+        "voice": "onyx",
+        "instructions": "Use a natural American Southern accent. Speak like a relaxed amateur operator. Read compact calls letter by letter, digits individually. Say CQ as see cue. Clean microphone, no effects."
+      },
+      "KD9ZVX": {
+        "voice": "nova",
+        "instructions": "Use a natural American accent. Speak like a relaxed amateur operator. Read compact calls letter by letter, digits individually. Say CQ as see cue. Clean microphone, no effects."
+      }
+    },
+    "turns": [
+      {
+        "callsign": "W4XQZ",
+        "text": "CQ CQ CQ, this is W4XQZ, Whiskey Four X-ray Quebec Zulu, calling CQ and standing by."
+      },
+      {
+        "callsign": "KD9ZVX",
+        "text": "W4XQZ, this is KD9ZVX, Kilo Delta Nine Zulu Victor X-ray. Name here is June, in Peoria. You're five and seven. Over."
+      },
+      {
+        "callsign": "W4XQZ",
+        "text": "KD9ZVX, this is W4XQZ. Hi June, I'm Ben in Georgia. You're five and nine here. The wire is up in the pecan tree again. How does the audio sound? Back to you."
+      },
+      {
+        "callsign": "KD9ZVX",
+        "text": "Nice clean audio, Ben. I can hear the birds behind you. Thanks for the contact, Ben. W4XQZ, this is KD9ZVX, seventy three, clear."
+      },
+      {
+        "callsign": "W4XQZ",
+        "text": "Seventy three, June. KD9ZVX, this is W4XQZ, clear."
+      }
+    ]
+  },
+  {
+    "id": "40v-dx",
+    "scene": "40v",
+    "role": "dx",
+    "speakers": {
+      "9V1QX": {
+        "voice": "sage",
+        "instructions": "Use a natural Singaporean English accent. Speak like a relaxed amateur operator. Read compact calls letter by letter, digits individually. Say CQ as see cue. Clean microphone, no effects."
+      },
+      "VK6XQZ": {
+        "voice": "ash",
+        "instructions": "Use a natural Australian English accent. Speak like a relaxed amateur operator. Read compact calls letter by letter, digits individually. Say CQ as see cue. Clean microphone, no effects."
+      }
+    },
+    "turns": [
+      {
+        "callsign": "9V1QX",
+        "text": "CQ CQ CQ, this is 9V1QX, Nine Victor One Quebec X-ray, calling CQ and standing by."
+      },
+      {
+        "callsign": "VK6XQZ",
+        "text": "9V1QX, this is VK6XQZ, Victor Kilo Six X-ray Quebec Zulu. Name here is Glen, in Perth. You're five and seven. Over."
+      },
+      {
+        "callsign": "9V1QX",
+        "text": "VK6XQZ, this is 9V1QX. Hi Glen, I'm Mei in Singapore. You're five and nine here. You came up just as the sun went down. Back to you."
+      },
+      {
+        "callsign": "VK6XQZ",
+        "text": "Same here. A little fading on the last over, but I copied every word. Thanks for the contact, Mei. 9V1QX, this is VK6XQZ, seventy three, clear."
+      },
+      {
+        "callsign": "9V1QX",
+        "text": "Seventy three, Glen. VK6XQZ, this is 9V1QX, clear."
+      }
+    ]
+  },
+  {
+    "id": "20v-domestic",
+    "scene": "20v",
+    "role": "domestic",
+    "speakers": {
+      "N7QZ": {
+        "voice": "coral",
+        "instructions": "Use a natural American accent. Speak like a relaxed amateur operator. Read compact calls letter by letter, digits individually. Say CQ as see cue. Clean microphone, no effects."
+      },
+      "AB0Q": {
+        "voice": "ballad",
+        "instructions": "Use a natural American accent. Speak like a relaxed amateur operator. Read compact calls letter by letter, digits individually. Say CQ as see cue. Clean microphone, no effects."
+      }
+    },
+    "turns": [
+      {
+        "callsign": "N7QZ",
+        "text": "CQ CQ CQ, this is N7QZ, November Seven Quebec Zulu, calling CQ and standing by."
+      },
+      {
+        "callsign": "AB0Q",
+        "text": "N7QZ, this is AB0Q, Alfa Bravo Zero Quebec. Name here is Ray, in Omaha. You're five and seven. Over."
+      },
+      {
+        "callsign": "N7QZ",
+        "text": "AB0Q, this is N7QZ. Hi Ray, I'm Tess in Idaho. You're five and nine here. I am trying the small loop today. Can you hear me off the back of the beam? Back to you."
+      },
+      {
+        "callsign": "AB0Q",
+        "text": "Yes indeed. Down a little from yesterday, but still easy copy. Thanks for the contact, Tess. N7QZ, this is AB0Q, seventy three, clear."
+      },
+      {
+        "callsign": "N7QZ",
+        "text": "Seventy three, Ray. AB0Q, this is N7QZ, clear."
+      }
+    ]
+  },
+  {
+    "id": "20v-dx",
+    "scene": "20v",
+    "role": "dx",
+    "speakers": {
+      "9V1ZX": {
+        "voice": "echo",
+        "instructions": "Use a natural Singaporean English accent. Speak like a relaxed amateur operator. Read compact calls letter by letter, digits individually. Say CQ as see cue. Clean microphone, no effects."
+      },
+      "W7ZVQ": {
+        "voice": "shimmer",
+        "instructions": "Use a natural American accent. Speak like a relaxed amateur operator. Read compact calls letter by letter, digits individually. Say CQ as see cue. Clean microphone, no effects."
+      }
+    },
+    "turns": [
+      {
+        "callsign": "9V1ZX",
+        "text": "CQ CQ CQ, this is 9V1ZX, Nine Victor One Zulu X-ray, calling CQ and standing by."
+      },
+      {
+        "callsign": "W7ZVQ",
+        "text": "9V1ZX, this is W7ZVQ, Whiskey Seven Zulu Victor Quebec. Name here is Eve, in Tacoma. You're five and seven. Over."
+      },
+      {
+        "callsign": "9V1ZX",
+        "text": "W7ZVQ, this is 9V1ZX. Hi Eve, I'm Jin in Singapore. You're five and nine here. Good to hear the west coast. Is the band open farther east? Back to you."
+      },
+      {
+        "callsign": "W7ZVQ",
+        "text": "Just the coast so far. You are the first station I have heard from Singapore this morning. Thanks for the contact, Jin. 9V1ZX, this is W7ZVQ, seventy three, clear."
+      },
+      {
+        "callsign": "9V1ZX",
+        "text": "Seventy three, Eve. W7ZVQ, this is 9V1ZX, clear."
+      }
+    ]
+  },
+  {
+    "id": "15v-domestic",
+    "scene": "15v",
+    "role": "domestic",
+    "speakers": {
+      "K5ZVQ": {
+        "voice": "verse",
+        "instructions": "Use a natural American accent. Speak like a relaxed amateur operator. Read compact calls letter by letter, digits individually. Say CQ as see cue. Clean microphone, no effects."
+      },
+      "WN3QZX": {
+        "voice": "alloy",
+        "instructions": "Use a natural American accent. Speak like a relaxed amateur operator. Read compact calls letter by letter, digits individually. Say CQ as see cue. Clean microphone, no effects."
+      }
+    },
+    "turns": [
+      {
+        "callsign": "K5ZVQ",
+        "text": "CQ CQ CQ, this is K5ZVQ, Kilo Five Zulu Victor Quebec, calling CQ and standing by."
+      },
+      {
+        "callsign": "WN3QZX",
+        "text": "K5ZVQ, this is WN3QZX, Whiskey November Three Quebec Zulu X-ray. Name here is Lee, in Erie. You're five and seven. Over."
+      },
+      {
+        "callsign": "K5ZVQ",
+        "text": "WN3QZX, this is K5ZVQ. Hi Lee, I'm Ruth in Tulsa. You're five and nine here. The wind dropped enough to put the mast up. How is the flutter now? Back to you."
+      },
+      {
+        "callsign": "WN3QZX",
+        "text": "Much steadier. I heard a little on your first call but the last over was solid. Thanks for the contact, Ruth. K5ZVQ, this is WN3QZX, seventy three, clear."
+      },
+      {
+        "callsign": "K5ZVQ",
+        "text": "Seventy three, Lee. WN3QZX, this is K5ZVQ, clear."
+      }
+    ]
+  },
+  {
+    "id": "15v-dx",
+    "scene": "15v",
+    "role": "dx",
+    "speakers": {
+      "9V1VQ": {
+        "voice": "fable",
+        "instructions": "Use a natural Singaporean English accent. Speak like a relaxed amateur operator. Read compact calls letter by letter, digits individually. Say CQ as see cue. Clean microphone, no effects."
+      },
+      "N6QXZ": {
+        "voice": "nova",
+        "instructions": "Use a natural American accent. Speak like a relaxed amateur operator. Read compact calls letter by letter, digits individually. Say CQ as see cue. Clean microphone, no effects."
+      }
+    },
+    "turns": [
+      {
+        "callsign": "9V1VQ",
+        "text": "CQ CQ CQ, this is 9V1VQ, Nine Victor One Victor Quebec, calling CQ and standing by."
+      },
+      {
+        "callsign": "N6QXZ",
+        "text": "9V1VQ, this is N6QXZ, November Six Quebec X-ray Zulu. Name here is Bea, in Fresno. You're five and seven. Over."
+      },
+      {
+        "callsign": "9V1VQ",
+        "text": "N6QXZ, this is 9V1VQ. Hi Bea, I'm Lin in Singapore. You're five and nine here. There is a little echo on the long path today. Back to you."
+      },
+      {
+        "callsign": "N6QXZ",
+        "text": "I hear it too. Good timing before the band closes. Thanks for the contact, Lin. 9V1VQ, this is N6QXZ, seventy three, clear."
+      },
+      {
+        "callsign": "9V1VQ",
+        "text": "Seventy three, Bea. N6QXZ, this is 9V1VQ, clear."
+      }
+    ]
+  },
+  {
+    "id": "2v-repeater",
+    "scene": "2v",
+    "role": "repeater",
+    "speakers": {
+      "KD8QZX": {
+        "voice": "ash",
+        "instructions": "Use a natural American accent. Speak like a relaxed amateur operator. Read compact calls letter by letter, digits individually. Say CQ as see cue. Clean microphone, no effects."
+      },
+      "W8VZQ": {
+        "voice": "coral",
+        "instructions": "Use a natural American accent. Speak like a relaxed amateur operator. Read compact calls letter by letter, digits individually. Say CQ as see cue. Clean microphone, no effects."
+      }
+    },
+    "turns": [
+      {
+        "callsign": "KD8QZX",
+        "text": "This is KD8QZX, Kilo Delta Eight Quebec Zulu X-ray, monitoring the repeater."
+      },
+      {
+        "callsign": "W8VZQ",
+        "text": "KD8QZX, this is W8VZQ, Whiskey Eight Victor Zulu Quebec. Liz here, north side of Toledo. Go ahead."
+      },
+      {
+        "callsign": "KD8QZX",
+        "text": "Hi Liz. Max in Toledo. You're full quieting. How's my portable getting in? Over."
+      },
+      {
+        "callsign": "W8VZQ",
+        "text": "Full quieting too, Max. KD8QZX, this is W8VZQ, seventy three, clear."
+      },
+      {
+        "callsign": "KD8QZX",
+        "text": "Seventy three, Liz. W8VZQ, this is KD8QZX, clear."
+      }
+    ]
+  },
+  {
+    "id": "2v-simplex",
+    "scene": "2v",
+    "role": "simplex",
+    "speakers": {
+      "N4ZQV": {
+        "voice": "nova",
+        "instructions": "Use a natural American Southern accent. Speak like a relaxed amateur operator. Read compact calls letter by letter, digits individually. Say CQ as see cue. Clean microphone, no effects."
+      },
+      "K4VQZ": {
+        "voice": "onyx",
+        "instructions": "Use a natural American accent. Speak like a relaxed amateur operator. Read compact calls letter by letter, digits individually. Say CQ as see cue. Clean microphone, no effects."
+      }
+    },
+    "turns": [
+      {
+        "callsign": "N4ZQV",
+        "text": "N4ZQV monitoring simplex. November Four Zulu Quebec Victor, listening."
+      },
+      {
+        "callsign": "K4VQZ",
+        "text": "N4ZQV, this is K4VQZ, Kilo Four Victor Quebec Zulu. Name here is Joe, in Daphne. How do you copy? Over."
+      },
+      {
+        "callsign": "N4ZQV",
+        "text": "K4VQZ, this is N4ZQV. Hi Joe, I'm Ada in Mobile. You're full quieting. I can hear you across the bay. Back to you."
+      },
+      {
+        "callsign": "K4VQZ",
+        "text": "Good copy both ways then. I will keep an ear on this frequency. Thanks for the contact, Ada. N4ZQV, this is K4VQZ, seventy three, clear."
+      },
+      {
+        "callsign": "N4ZQV",
+        "text": "Seventy three, Joe. K4VQZ, this is N4ZQV, clear."
+      }
+    ]
+  },
+  {
+    "id": "qrm-target",
+    "scene": "qrm",
+    "role": "target",
+    "speakers": {
+      "W3VQZ": {
+        "voice": "sage",
+        "instructions": "Use a natural American accent. Speak like a relaxed amateur operator. Read compact calls letter by letter, digits individually. Say CQ as see cue. Clean microphone, no effects."
+      },
+      "N8XQV": {
+        "voice": "echo",
+        "instructions": "Use a natural American accent. Speak like a relaxed amateur operator. Read compact calls letter by letter, digits individually. Say CQ as see cue. Clean microphone, no effects."
+      }
+    },
+    "turns": [
+      {
+        "callsign": "W3VQZ",
+        "text": "CQ CQ CQ, this is W3VQZ, Whiskey Three Victor Quebec Zulu, calling CQ and standing by."
+      },
+      {
+        "callsign": "N8XQV",
+        "text": "W3VQZ, this is N8XQV, November Eight X-ray Quebec Victor. Name here is Sam, in Akron. You're five and seven. Over."
+      },
+      {
+        "callsign": "W3VQZ",
+        "text": "N8XQV, this is W3VQZ. Hi Sam, I'm Kate in York. You're five and nine here. I moved the dipole away from the shed. Can you hear any hum? Back to you."
+      },
+      {
+        "callsign": "N8XQV",
+        "text": "All clear here. The new feed line seems to be doing the trick. Thanks for the contact, Kate. W3VQZ, this is N8XQV, seventy three, clear."
+      },
+      {
+        "callsign": "W3VQZ",
+        "text": "Seventy three, Sam. N8XQV, this is W3VQZ, clear."
+      }
+    ]
+  },
+  {
+    "id": "qrm-upper",
+    "scene": "qrm",
+    "role": "upper",
+    "speakers": {
+      "KA9QXV": {
+        "voice": "ballad",
+        "instructions": "Use a natural American accent. Speak like a relaxed amateur operator. Read compact calls letter by letter, digits individually. Say CQ as see cue. Clean microphone, no effects."
+      },
+      "W0QZV": {
+        "voice": "shimmer",
+        "instructions": "Use a natural American accent. Speak like a relaxed amateur operator. Read compact calls letter by letter, digits individually. Say CQ as see cue. Clean microphone, no effects."
+      }
+    },
+    "turns": [
+      {
+        "callsign": "KA9QXV",
+        "text": "CQ CQ CQ, this is KA9QXV, Kilo Alfa Nine Quebec X-ray Victor, calling CQ and standing by."
+      },
+      {
+        "callsign": "W0QZV",
+        "text": "KA9QXV, this is W0QZV, Whiskey Zero Quebec Zulu Victor. Name here is Sue, in Ames. You're five and seven. Over."
+      },
+      {
+        "callsign": "KA9QXV",
+        "text": "W0QZV, this is KA9QXV. Hi Sue, I'm Dan in Madison. You're five and nine here. I have the log open. Did you say the trail starts at the lake? Back to you."
+      },
+      {
+        "callsign": "W0QZV",
+        "text": "That is right. We took the short trail and set up by the water. Thanks for the contact, Dan. KA9QXV, this is W0QZV, seventy three, clear."
+      },
+      {
+        "callsign": "KA9QXV",
+        "text": "Seventy three, Sue. W0QZV, this is KA9QXV, clear."
+      }
+    ]
+  },
+  {
+    "id": "qrm-outer",
+    "scene": "qrm",
+    "role": "outer",
+    "speakers": {
+      "N1ZVQ": {
+        "voice": "verse",
+        "instructions": "Use a natural American accent. Speak like a relaxed amateur operator. Read compact calls letter by letter, digits individually. Say CQ as see cue. Clean microphone, no effects."
+      },
+      "K2QXV": {
+        "voice": "ash",
+        "instructions": "Use a natural American accent. Speak like a relaxed amateur operator. Read compact calls letter by letter, digits individually. Say CQ as see cue. Clean microphone, no effects."
+      }
+    },
+    "turns": [
+      {
+        "callsign": "N1ZVQ",
+        "text": "CQ CQ CQ, this is N1ZVQ, November One Zulu Victor Quebec, calling CQ and standing by."
+      },
+      {
+        "callsign": "K2QXV",
+        "text": "N1ZVQ, this is K2QXV, Kilo Two Quebec X-ray Victor. Name here is Tom, in Albany. You're five and seven. Over."
+      },
+      {
+        "callsign": "N1ZVQ",
+        "text": "K2QXV, this is N1ZVQ. Hi Tom, I'm Jo in Bangor. You're five and nine here. We had frost on the lawn this morning. How is it there? Back to you."
+      },
+      {
+        "callsign": "K2QXV",
+        "text": "Clear and cool here. A fine morning to put a wire in the trees. Thanks for the contact, Jo. N1ZVQ, this is K2QXV, seventy three, clear."
+      },
+      {
+        "callsign": "N1ZVQ",
+        "text": "Seventy three, Tom. K2QXV, this is N1ZVQ, clear."
+      }
+    ]
+  },
+  {
+    "id": "40v-portable",
+    "scene": "40v",
+    "role": "portable",
+    "speakers": {
+      "N0ZQX": {
+        "voice": "shimmer",
+        "instructions": "Relaxed Midwestern American field operator. Speak calls letter by letter and digits individually. Read CQ as see cue. Clear close microphone."
+      },
+      "K9VXZ": {
+        "voice": "ash",
+        "instructions": "Friendly American Great Lakes accent. Conversational pace. Read each compact call letter by letter and digit by digit."
+      }
+    },
+    "turns": [
+      {
+        "callsign": "N0ZQX",
+        "text": "CQ CQ CQ, this is N0ZQX, November Zero Zulu Quebec X-ray, calling CQ and standing by."
+      },
+      {
+        "callsign": "K9VXZ",
+        "text": "N0ZQX, this is K9VXZ, Kilo Nine Victor X-ray Zulu. Will in Rockford. Five by seven, over."
+      },
+      {
+        "callsign": "N0ZQX",
+        "text": "Thanks, Will. Jo in Cedar Falls. You're five and nine. The little wire made it over the river. Back to you."
+      },
+      {
+        "callsign": "K9VXZ",
+        "text": "Nice signal from the park, Jo. N0ZQX, this is K9VXZ, seventy three, clear."
+      },
+      {
+        "callsign": "N0ZQX",
+        "text": "K9VXZ, this is N0ZQX, seventy three, clear."
+      }
+    ]
+  }
 ]

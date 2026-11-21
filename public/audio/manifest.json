@@ -1,1 +1,148 @@
-{"voice":[]}
+{
+  "clips": [
+    {
+      "id": "40v-domestic",
+      "scene": "40v",
+      "role": "domestic",
+      "files": {
+        "ogg": "40v-domestic.ogg",
+        "m4a": "40v-domestic.m4a"
+      },
+      "duration": 61.9065,
+      "fingerprint": "3722fbe83f28156b373c7c20e7181432c289f4d8c63ddeef16915262fb93a51a",
+      "script": "scripts/qso-scripts.json#40v-domestic"
+    },
+    {
+      "id": "40v-dx",
+      "scene": "40v",
+      "role": "dx",
+      "files": {
+        "ogg": "40v-dx.ogg",
+        "m4a": "40v-dx.m4a"
+      },
+      "duration": 64.2065,
+      "fingerprint": "420d42a7c3790940c9cb7b35b666eaab587f4e10ce6f96e5e0abf2a69cc729dd",
+      "script": "scripts/qso-scripts.json#40v-dx"
+    },
+    {
+      "id": "20v-domestic",
+      "scene": "20v",
+      "role": "domestic",
+      "files": {
+        "ogg": "20v-domestic.ogg",
+        "m4a": "20v-domestic.m4a"
+      },
+      "duration": 60.7065,
+      "fingerprint": "2905659eb3db9514eff10fb180850f6c0ded82a60dd1a8c5a374e8d123d8c532",
+      "script": "scripts/qso-scripts.json#20v-domestic"
+    },
+    {
+      "id": "20v-dx",
+      "scene": "20v",
+      "role": "dx",
+      "files": {
+        "ogg": "20v-dx.ogg",
+        "m4a": "20v-dx.m4a"
+      },
+      "duration": 66.2065,
+      "fingerprint": "5ae2724347f87c1d58539657258f5cd4c25c101f02b8541d37430580726eb142",
+      "script": "scripts/qso-scripts.json#20v-dx"
+    },
+    {
+      "id": "15v-domestic",
+      "scene": "15v",
+      "role": "domestic",
+      "files": {
+        "ogg": "15v-domestic.ogg",
+        "m4a": "15v-domestic.m4a"
+      },
+      "duration": 65.1065,
+      "fingerprint": "a61af3324e247af2c76500b60665317446298a7250f381e2b69cf3d4036785a3",
+      "script": "scripts/qso-scripts.json#15v-domestic"
+    },
+    {
+      "id": "15v-dx",
+      "scene": "15v",
+      "role": "dx",
+      "files": {
+        "ogg": "15v-dx.ogg",
+        "m4a": "15v-dx.m4a"
+      },
+      "duration": 60.9065,
+      "fingerprint": "205bc436895bc1209527c09b9d720541e05105c79ac3f62ebb517d179629ebac",
+      "script": "scripts/qso-scripts.json#15v-dx"
+    },
+    {
+      "id": "2v-repeater",
+      "scene": "2v",
+      "role": "repeater",
+      "files": {
+        "ogg": "2v-repeater.ogg",
+        "m4a": "2v-repeater.m4a"
+      },
+      "duration": 49.6065,
+      "fingerprint": "1b4481320a540c8b7324c81e7b2f21735056f9cc6737615679ff9ccba1d06a0b",
+      "script": "scripts/qso-scripts.json#2v-repeater"
+    },
+    {
+      "id": "2v-simplex",
+      "scene": "2v",
+      "role": "simplex",
+      "files": {
+        "ogg": "2v-simplex.ogg",
+        "m4a": "2v-simplex.m4a"
+      },
+      "duration": 53.8065,
+      "fingerprint": "047b81e63df6f02c77b511e09a8a257371c7e242a5f5af00546101af0e69cb6b",
+      "script": "scripts/qso-scripts.json#2v-simplex"
+    },
+    {
+      "id": "qrm-target",
+      "scene": "qrm",
+      "role": "target",
+      "files": {
+        "ogg": "qrm-target.ogg",
+        "m4a": "qrm-target.m4a"
+      },
+      "duration": 66.7065,
+      "fingerprint": "a0cddf2eafa290f3fcc575e177e87866c31b0e242e14b1816c93760522487371",
+      "script": "scripts/qso-scripts.json#qrm-target"
+    },
+    {
+      "id": "qrm-upper",
+      "scene": "qrm",
+      "role": "upper",
+      "files": {
+        "ogg": "qrm-upper.ogg",
+        "m4a": "qrm-upper.m4a"
+      },
+      "duration": 65.3065,
+      "fingerprint": "5f74a18a96852e0841f6936813f55f72069a69033f51e8814081dca7d98120ca",
+      "script": "scripts/qso-scripts.json#qrm-upper"
+    },
+    {
+      "id": "qrm-outer",
+      "scene": "qrm",
+      "role": "outer",
+      "files": {
+        "ogg": "qrm-outer.ogg",
+        "m4a": "qrm-outer.m4a"
+      },
+      "duration": 63.3065,
+      "fingerprint": "e61a92fc1e23466326603b126c7c543627c8b9a3c37db63bef3d22cbab787990",
+      "script": "scripts/qso-scripts.json#qrm-outer"
+    },
+    {
+      "id": "40v-portable",
+      "scene": "40v",
+      "role": "portable",
+      "files": {
+        "ogg": "40v-portable.ogg",
+        "m4a": "40v-portable.m4a"
+      },
+      "duration": 53.1065,
+      "fingerprint": "5d61cd29a45246da541a8976231e2bb0c6b0c9990d0b9631a14ff126312a68a9",
+      "script": "scripts/qso-scripts.json#40v-portable"
+    }
+  ]
+}

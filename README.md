@@ -16,7 +16,7 @@ npm run test:e2e
 npm run shots
 ```
 
-On a Linux machine missing browser libraries, use `npx playwright install --with-deps chromium`. The production site is `dist/`, ready for a static host such as Pages. AudioWorklet requires HTTPS or localhost. Enable audio once, or select a training drill. Fonts, icons, the worklet and the empty audio manifest are all local.
+On a Linux machine missing browser libraries, use `npx playwright install --with-deps chromium`. The production site is `dist/`, ready for a static host such as Pages. AudioWorklet requires HTTPS or localhost. Enable audio once, or select a training drill. Fonts, icons, the worklet and speech clips are all local.
 
 Playwright builds and serves the static output on localhost. The screenshot script builds a fresh production bundle and writes six 1440×900 views and one 390×844 view to [shots](shots/). No deploy step is included.
 
@@ -30,7 +30,7 @@ The five drills cover sideband choice, tuning, finding the FT8 watering hole, ad
 
 ## Audio and scope
 
-- **Voice.** Built-in, nonverbal formant voices have syllables, changing pitch and three asymmetric formant regions. For intelligible words, add recordings. A radix-2 FFT constructs 300–2700 Hz analytic clips. The worklet conjugates the quadrature channel for LSB, mixes each station by its dial offset, translates the selected complex IF to zero, filters both lanes, then restores the audio frequency. The IF filter is a fourth-order Butterworth. Up to eight nearby stations enter the mixer.
+- **Voice.** The receiver loads a prerecorded exchange for each nearby station and loops it. Synthetic formant voices cover missing or undecodable files. A radix-2 FFT constructs 300–2700 Hz analytic clips. The worklet conjugates the quadrature channel for LSB, mixes each station by its dial offset, translates the selected complex IF to zero, filters both lanes, then restores the audio frequency. The IF filter is a fourth-order Butterworth. Up to eight nearby stations enter the mixer.
 - **Opposite sideband.** At the exact carrier, a physical ideal SSB receiver rejects the other sideband. The requested audible training cue uses a 3 kHz displaced mixing reference on opposite-sideband voice, which reverses the order of speech frequencies. FT8 uses ordinary USB selection without this cue.
 - **Band conditions.** Each station has its own slow, seeded fading envelope. Difficulty changes the noise reference and fade depth. Manual sliders override the preset. The S-meter and approximate SNR estimate passband signal energy relative to the noise reference. They are teaching instruments rather than calibrated measurements.
 - **FT8.** Six USB-offset traces per band, 15-second UTC-aligned slots, a 0.5-second start delay, 79 symbols at 6.25 baud and 6.25 Hz tone spacing. The typed-array sequence includes Costas sync blocks and pseudo-payload tones. It provides tuning practice without encoding or decoding messages.
@@ -38,17 +38,22 @@ The five drills cover sideband choice, tuning, finding the FT8 watering hole, ad
 - **Waterfall.** Canvas renders a model of RF occupancy, including station envelopes, noise texture and the actual FT8 symbol schedule. Signal traces remain visible outside the audio passband. The line and shading use the receiver’s VFO and signed IF edges. The scope is a simulated RF display, independent of output volume.
 - **Verification.** The same DSP core runs in the AudioWorklet and under Vitest. Tests measure FFT peaks and RMS energy. The read-only `window.__practice` snapshot exposes dial offsets, inversion, passband occupancy, approximate SNR, FM quieting and squelch for browser tests.
 
-## Add recordings or generate TTS
+## Prerecorded voices
 
-Put consented 48 kHz mono WAV or Opus clips in `public/audio/voice/`. Only distribute recordings you have permission to publish. List their filenames in `public/audio/manifest.json`:
+All callsigns and operators in the scripts are fictional. Any match to a real licensee is coincidental. Domestic and DX contacts share the HF bands. On 40 m the Singapore station works Western Australia. The 2 m stations use local simplex and repeater exchanges. The QRM drill mixes three independent conversations.
 
-```json
-{"voice":["garden.wav","coast.opus"]}
+The browser requests only static files from its own origin. It prefers Opus in Ogg and falls back to AAC in M4A. Audio is decoded at the receiver's sample rate for clips (12 kHz) before analytic filtering. Only the maintainer’s asset-preparation scripts call the OpenAI API. Playing the simulator incurs no API charges.
+
+To regenerate, install FFmpeg with Opus and AAC encoders, supply your own OpenAI credential through the process environment as `OPENAI_API_KEY`, then run:
+
+```sh
+npm run tts
+node scripts/verify-tts.mjs
 ```
 
-The browser decodes up to eight clips on first audio start. It uses synthesized voices if none load. The FT8 and FM directories are reserved for future assets.
+Edit the ordered turns and operator directions in [the scripts](scripts/qso-scripts.json). To rebuild one exchange, pass its ID, for example `npm run tts -- 40v-domestic`. Each distinct turn is billed on its first render. The ignored `.tts-cache/` directory preserves raw speech and transcripts across runs. Keep it when editing. Using `--force` requests fresh speech for the selected turns. Verification bills transcription by audio usage when the encoded file changes. The cache includes a numeric request ledger for cost estimates.
 
-For optional build-time AI voices, edit `scripts/qso-scripts.json`, provide `OPENAI_API_KEY` through the process environment, and run `npm run tts`. The script requests Opus audio, saves `tts-*.opus` and appends entries while preserving existing recordings. With no key, it exits successfully and leaves the manifest alone. Only audio, scripts and the manifest belong in the site. Review any generated speech before distributing it.
+FFmpeg normalizes each turn, inserts short pauses between transmissions, and normalizes the complete exchange before encoding both formats. [Verification results](docs/tts-verification.md) cover transcription accuracy, callsign phonetics, loudness and duration.
 
 ## Add a band
 
