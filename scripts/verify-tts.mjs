@@ -9,7 +9,7 @@ import {
 import { spawnSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
 process.chdir(fileURLToPath(new URL('../', import.meta.url)))
-mkdirSync('.tts-cache', { recursive: true })
+mkdirSync('.tts-cache/v3', { recursive: true })
 const scripts = JSON.parse(readFileSync('scripts/qso-scripts.json'))
 const { clips } = JSON.parse(readFileSync('public/audio/manifest.json'))
 const alphabet =
@@ -54,50 +54,52 @@ function wer(reference, actual) {
   }
   return prev.at(-1) / a.length
 }
-async function transcribe(file, q) {
+async function transcribe(file, q, model) {
   const data = readFileSync(file)
   const path =
-    '.tts-cache/' +
+    '.tts-cache/v3/' +
     createHash('sha256').update(data).digest('hex') +
-    '.transcript'
-  if (existsSync(path)) return readFileSync(path, 'utf8')
+    '-' +
+    model +
+    '.json'
+  if (existsSync(path)) return JSON.parse(readFileSync(path))
   if (!process.env.OPENAI_API_KEY)
     throw Error('Missing transcription credential')
-  for (const model of ['gpt-4o-transcribe', 'whisper-1']) {
-    const form = new FormData()
-    form.append('file', new Blob([data], { type: 'audio/mp4' }), q.id + '.m4a')
-    form.append('model', model)
-    form.append('language', 'en')
+  const form = new FormData()
+  form.append('file', new Blob([data], { type: 'audio/mp4' }), q.id + '.m4a')
+  form.append('model', model)
+  form.append('language', 'en')
+  if (model === 'whisper-1') {
+    form.append('response_format', 'verbose_json')
+    form.append('timestamp_granularities[]', 'word')
+  } else {
     form.append(
       'prompt',
-      'Amateur radio conversation. Transcribe verbatim. Preserve spoken phonetic alphabet words. Write compact station IDs when spoken letter by letter.',
+      'Amateur radio conversation. Transcribe verbatim. Preserve spoken phonetic alphabet words.',
     )
-    const response = await fetch(
-      'https://api.openai.com/v1/audio/transcriptions',
-      {
-        method: 'POST',
-        redirect: 'error',
-        headers: { Authorization: 'Bearer ' + process.env.OPENAI_API_KEY },
-        body: form,
-      },
-    )
-    appendFileSync(
-      '.tts-cache/usage.jsonl',
-      JSON.stringify({
-        id: q.id,
-        seconds: q.duration,
-        status: response.status,
-        model,
-      }) + '\n',
-    )
-    if (response.ok) {
-      const { text } = await response.json()
-      writeFileSync(path, text)
-      return text
-    }
-    if (![400, 403, 404].includes(response.status) || model === 'whisper-1')
-      throw Error('Transcription HTTP ' + response.status)
   }
+  const response = await fetch(
+    'https://api.openai.com/v1/audio/transcriptions',
+    {
+      method: 'POST',
+      redirect: 'error',
+      headers: { Authorization: 'Bearer ' + process.env.OPENAI_API_KEY },
+      body: form,
+    },
+  )
+  appendFileSync(
+    '.tts-cache/v3/usage.jsonl',
+    JSON.stringify({
+      id: q.id,
+      seconds: q.duration,
+      model,
+      status: response.status,
+    }) + '\n',
+  )
+  if (!response.ok) throw Error(model + ' HTTP ' + response.status)
+  const answer = await response.json()
+  writeFileSync(path, JSON.stringify(answer))
+  return answer
 }
 function loudness(path) {
   const result = spawnSync(
@@ -121,14 +123,32 @@ function loudness(path) {
 }
 const rows = []
 let failed = false
-for (const q of clips) {
+const ids = process.argv.slice(2)
+for (const q of clips.filter((c) => !ids.length || ids.includes(c.id))) {
   const script = scripts.find((s) => s.id === q.id)
   const path = (ext) => 'public/audio/voice/' + q.files[ext]
-  const transcript = await transcribe(path('m4a'), q)
-  const error = wer(script.turns.map((t) => t.text).join(' '), transcript)
-  const missing = Object.keys(script.speakers).filter(
-    (call) => !normalize(transcript).includes(spell(call)),
+  const [{ text: transcript }] = await Promise.all(
+    ['gpt-4o-transcribe', 'whisper-1'].map((model) =>
+      transcribe(path('m4a'), q, model),
+    ),
   )
+  const measured = spawnSync(
+    process.env.VOICE_PYTHON || 'python3',
+    ['scripts/measure-voices.py', q.id],
+    { encoding: 'utf8' },
+  )
+  if (measured.status !== 0) throw Error(measured.stderr)
+  const metrics = JSON.parse(measured.stdout)
+
+  const reference = script.turns.map((t) => t.text).join(' ')
+  const error = wer(reference, transcript)
+  const expected = normalize(reference)
+  const spoken = normalize(transcript)
+  const missing = Object.keys(script.speakers).filter((call) => {
+    const phonetics = spell(call)
+    const count = expected.split(phonetics).length - 1
+    return count < 1 || spoken.split(phonetics).length - 1 < count
+  })
   const levels = ['ogg', 'm4a'].map((ext) => loudness(path(ext)))
   failed ||=
     error > 0.1 ||
@@ -136,6 +156,7 @@ for (const q of clips) {
     levels.some((v) => Math.abs(v + 16) > 1.5)
   rows.push([
     q.id,
+    ...metrics.map((v, i) => v.toFixed([0, 0, 1, 0, 0, 2, 1, 1, 1][i])),
     (error * 100).toFixed(1) + '%',
     missing.join(', ') || 'OK',
     ...levels,
@@ -143,10 +164,18 @@ for (const q of clips) {
   ])
   console.log(q.id, q.duration)
 }
-writeFileSync(
-  'docs/tts-verification.md',
-  '# Speech verification\n\nThe AAC transcript is compared with the ordered script. Both encodings are measured independently. Phonetics requires each full callsign spelling in order.\n\n| Clip | WER | Missing phonetics | Opus LUFS | AAC LUFS | Seconds |\n|---|---:|---|---:|---:|---:|\n' +
-    rows.map((r) => '| ' + r.join(' | ') + ' |').join('\n') +
-    '\n',
-)
+const table = [
+  '| Clip | WPM | Artic. WPM | Pauses/min | Median ms | f0 Hz | SD st | <300 Hz % | LF dB | Station Δ dB | WER | Phonetics | Opus LUFS | AAC LUFS | Seconds |',
+  '|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|---:|---:|---:|',
+  '| Real excerpts | 152–163 | 168–180 | 19.5–26.3 | 200–290 | 128–165 | 4.93–5.38 | 4.2–4.6 | −26 to −21 | — | — | — | — | — | — |',
+  ...rows.map((r) => '| ' + r.join(' | ') + ' |'),
+].join('\n')
+console.log(table)
+if (!ids.length)
+  writeFileSync(
+    'docs/tts-verification.md',
+    '# Speech verification\n\n' +
+      table +
+      '\n\nRates use Whisper word timestamps on final AAC. Articulation caps interword gaps at 0.5 s. Pitch and energy use decoded Opus at 16 kHz. Pauses use 20 ms RMS frames and the reference adaptive threshold, including handoffs. LF compares 60–150 Hz with 300–600 Hz. Station separation compares RMS across complete overs, excluding handoff gaps. The 3–8 dB station separation is a design target. Pitch summaries pool both speakers.\n\nWER uses a separate GPT-4o transcription. The phonetics check counts each ordered full spelling against the script. Loudness is measured independently after encoding.\n',
+  )
 if (failed || clips.length !== scripts.length) process.exitCode = 1

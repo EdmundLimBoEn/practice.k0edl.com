@@ -48,12 +48,14 @@ To regenerate, install FFmpeg with Opus and AAC encoders, supply your own OpenAI
 
 ```sh
 npm run tts
-node scripts/verify-tts.mjs
+python3 -m venv .tts-cache/analysis
+.tts-cache/analysis/bin/pip install numpy scipy praat-parselmouth
+VOICE_PYTHON=.tts-cache/analysis/bin/python node scripts/verify-tts.mjs
 ```
 
-Edit the ordered turns and operator directions in [the scripts](scripts/qso-scripts.json). To rebuild one exchange, pass its ID, for example `npm run tts -- 40v-domestic`. Each distinct turn is billed on its first render. The ignored `.tts-cache/` directory preserves raw speech and transcripts across runs. Keep it when editing. Using `--force` requests fresh speech for the selected turns. Verification bills transcription by audio usage when the encoded file changes. The cache includes a numeric request ledger for cost estimates.
+Edit the ordered turns and operator directions in [the scripts](scripts/qso-scripts.json). Each over is one voice-acted WAV from `gpt-audio-1.5` chat completions. The ignored `.tts-cache/v3/` directory keeps the raw takes by request hash, processed turn boundaries, model-specific transcripts, Whisper word timestamps and a numeric usage ledger. Keep it across edits. To rebuild from cached takes, run `npm run tts -- 40v-domestic`. To replace only its second over, add `--retake=2`. Verification accepts clip IDs for spot checks. Running it without IDs refreshes the full report.
 
-FFmpeg normalizes each turn, inserts short pauses between transmissions, and normalizes the complete exchange before encoding both formats. [Verification results](docs/tts-verification.md) cover transcription accuracy, callsign phonetics, loudness and duration.
+Each station has its own speech bandpass and compression, with a presence lift around 1.8 kHz. Measured turn pace controls tempo. Seeded station gain and handoff delays survive one two-pass loudness adjustment to the assembled exchange. Both encodings share the resulting mono master. [Per-clip measurements and transcription checks](docs/tts-verification.md).
 
 ## Add a band
 
