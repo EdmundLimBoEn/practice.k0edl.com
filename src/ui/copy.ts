@@ -108,11 +108,6 @@ export const C = {
   clip: 'Recorded audio',
   stations: 'stations',
   stationList: 'Scene signals',
-  livePartner: 'Live QSO partner (coming soon)',
-  disabled: 'No live endpoint configured.',
-  tryLive: 'Check endpoint',
-  ready: 'Endpoint ready.',
-  failed: 'Endpoint unavailable.',
   prompts: [
     'Choose the sideband for this signal.',
     'Tune the marked signal and select its sideband.',

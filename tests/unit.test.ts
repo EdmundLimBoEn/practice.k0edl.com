@@ -175,47 +175,6 @@ it('closes FM squelch and gives a centred carrier priority over an overlapping w
   expect(buffer.every((v) => v === 0)).toBe(true)
 })
 
-it('guards the optional Worker before minting a short-lived client secret', async () => {
-  const worker = (await import('../worker/src/index')).default
-  const env = {
-    OPENAI_API_KEY: 'unit-test-value',
-    LIMIT: { limit: async () => ({ success: false }) },
-  }
-  const request = (origin: string) =>
-    new Request('https://worker.invalid/session', {
-      method: 'POST',
-      headers: { Origin: origin },
-    })
-  expect(
-    (await worker.fetch(request('https://example.invalid'), env)).status,
-  ).toBe(403)
-  expect(
-    (await worker.fetch(request('https://practice.k0edl.com'), env)).status,
-  ).toBe(429)
-  const original = globalThis.fetch
-  try {
-    globalThis.fetch = async (url, init) => {
-      expect(String(url)).toBe(
-        'https://api.openai.com/v1/realtime/client_secrets',
-      )
-      expect(JSON.parse(String(init?.body)).expires_after.seconds).toBe(60)
-      return Response.json({ value: 'ephemeral-fixture', expires_at: 60 })
-    }
-    const result = await worker.fetch(request('https://practice.k0edl.com'), {
-      ...env,
-      LIMIT: { limit: async () => ({ success: true }) },
-    })
-    expect(result.headers.get('Access-Control-Allow-Origin')).toBe(
-      'https://practice.k0edl.com',
-    )
-    expect(await result.json()).toEqual({
-      value: 'ephemeral-fixture',
-      expires_at: 60,
-    })
-  } finally {
-    globalThis.fetch = original
-  }
-})
 
 it('raises the actual receiver noise power between easy and hard', () => {
   function noisePower(noise: number) {

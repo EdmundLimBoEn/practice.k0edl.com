@@ -8,5 +8,5 @@
     "types": ["vite/client"],
     "skipLibCheck": true
   },
-  "include": ["src", "worker/src"]
+  "include": ["src"]
 }

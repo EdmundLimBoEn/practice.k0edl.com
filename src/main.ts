@@ -292,7 +292,6 @@ const dialog = (body: string) => {
   $('dialogbody').innerHTML = body
   $<HTMLDialogElement>('dialog').showModal()
 }
-const endpoint = import.meta.env.VITE_LIVE_ENDPOINT
 document.addEventListener('click', async (e) => {
   const el = (e.target as Element).closest('button')
   if (!el) return
@@ -376,13 +375,7 @@ document.addEventListener('click', async (e) => {
       '<h2>' +
         C.tools +
         '</h2>' +
-        button('reset', C.reset) +
-        '<h3>' +
-        C.livePartner +
-        '</h3>' +
-        (endpoint
-          ? button('liveCheck', C.tryLive)
-          : '<p>' + C.disabled + '</p>'),
+        button('reset', C.reset), 
     )
   if (id === 'help')
     dialog(
@@ -404,14 +397,6 @@ document.addEventListener('click', async (e) => {
         C.priv +
         '</p>',
     )
-  if (id === 'liveCheck') {
-    try {
-      const r = await fetch(endpoint, { method: 'POST' })
-      el.textContent = r.ok ? C.ready : C.failed
-    } catch {
-      el.textContent = C.failed
-    }
-  }
   if (id === 'reset') {
     Object.assign(state, defaults)
     difficulty = 0

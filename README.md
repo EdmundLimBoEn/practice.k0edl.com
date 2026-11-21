@@ -61,12 +61,6 @@ Band limits, segment edges, default dial, optional FT8 dial and voice placements
 
 The optional phone label applies to both the FCC overlay and the stations. Verify Region 3 segments against the cited plan before enabling it. The shipped app contains only 40, 20, 15 and 2 m.
 
-## Optional live partner slot
-
-The **Live QSO partner (coming soon)** item in Tools is disabled until a build sets `VITE_LIVE_ENDPOINT` to a session endpoint URL. The URL is public configuration. An explicit click makes a POST and shows availability. The app does not start a live voice session.
-
-[worker/](worker/) is a separate, undeployed Cloudflare Worker project. Its `POST /session` accepts the practice origin, applies an IP-based rate-limit binding (three requests per minute per Cloudflare location), and requests a 60-second Realtime client secret. Its server-side binding is named `OPENAI_API_KEY`. Configure that as a Worker secret if enabling the service in future. Never prefix a secret with `VITE_`. CORS limits browser access and is not user authentication. The Worker is excluded from the static bundle.
-
 ## Review
 
 [UI copy](src/ui/copy.ts) · [Band-plan and protocol sources](docs/SOURCES.md) · [MIT license](LICENSE)

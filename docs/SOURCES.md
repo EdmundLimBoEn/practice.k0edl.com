@@ -24,16 +24,7 @@
 - WSJT-X User Guide 2.7.0: https://wsjt.sourceforge.io/wsjtx-doc/wsjtx-main-2.7.0.html
 - ARRL OTA, FT8 frequencies: https://www.arrl.org/files/file/OTA%20Magazine/OTA%20FT8.pdf
 
-## Live voice
-
-- https://developers.openai.com/api/docs/models/gpt-live-1.1
-
----
-
-
 ## Implementation references
 
 - [WSJT-X protocol specifications](https://wsjt.sourceforge.io/wsjtx-doc/wsjtx-main-2.7.0.html#PROTOCOL_OVERVIEW)
-- [Realtime client secrets](https://developers.openai.com/api/reference/resources/realtime/subresources/client_secrets/methods/create)
 - [Speech generation](https://developers.openai.com/api/docs/guides/text-to-speech)
-- [Worker rate limiting](https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/)
