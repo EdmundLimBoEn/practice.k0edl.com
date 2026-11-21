@@ -1,33 +1,29 @@
 {
   "name": "k0edl-practice",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "directories": {
-    "doc": "docs",
-    "test": "tests"
-  },
+  "description": "Receive-only amateur radio practice for SST",
   "scripts": {
     "test": "vitest run tests/unit.test.ts",
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "test:e2e": "playwright test",
     "shots": "node scripts/shots.mjs",
-    "tts": "node scripts/generate-tts.mjs"
+    "tts": "node scripts/generate-tts.mjs",
+    "preshots": "npm run build"
   },
-  "keywords": [],
-  "author": "",
+  "author": "Edmund Lim",
   "license": "MIT",
   "type": "module",
   "devDependencies": {
     "@playwright/test": "^1.65.1",
     "typescript": "^5.9.3",
     "vite": "^6.4.6",
-    "vitest": "^3.2.7"
+    "vitest": "^5.1.1"
   },
   "dependencies": {
     "@fontsource/ibm-plex-mono": "^5.3.0",
     "@fontsource/inter": "^5.3.0",
     "lucide-static": "^1.77.0"
-  }
+  },
+  "private": true
 }
